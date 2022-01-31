@@ -18,9 +18,9 @@
         @scroll="onScroll"
         :options="slideOptions"
         ref="slide">
-        <cube-slide-item> 我是Good </cube-slide-item>
-        <cube-slide-item> 我是Rating </cube-slide-item>
-        <cube-slide-item> 我是Seller </cube-slide-item>
+        <cube-slide-item v-for="(tab,index) in tabs" :key="index">
+            <component :is="tab.component" :data="tab.data"></component>
+        </cube-slide-item>
       </cube-slide>
     </div>
   </div>
@@ -29,21 +29,18 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'tab',
+  props: {
+    tabs: {
+      type: Array,
+      default() {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       index: 0,
       showSlider: true,
-      tabs: [
-        {
-          label: '商品'
-        },
-                {
-          label: '评价'
-        },
-                {
-          label: '商家'
-        }
-      ],
       slideOptions: {
         listenScroll: true,
         probeType: 3,
