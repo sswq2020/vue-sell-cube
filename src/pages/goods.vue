@@ -82,5 +82,17 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import "~common/stylus/mixin";
+@import "~common/stylus/variable";
+.goods
+  position: relative
+  text-align: left
+  height: 100%
+  .scroll-nav-wrapper
+    position:absolute
+    width: 100%
+    top:0
+    left:0
+    bottom: 48px
 
 </style>
