@@ -35,11 +35,15 @@ export default {
       default() {
         return {}
       }
+    },
+    initialIndex: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      index: 0,
+      index: this.initialIndex,
       showSlider: true,
       slideOptions: {
         listenScroll: true,
