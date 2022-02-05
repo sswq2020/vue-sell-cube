@@ -19,7 +19,7 @@
         :options="slideOptions"
         ref="slide">
         <cube-slide-item v-for="(tab,index) in tabs" :key="index">
-            <component :is="tab.component" :data="tab.data"></component>
+            <component :is="tab.component" :data="tab.data" ref="component"></component>
         </cube-slide-item>
       </cube-slide>
     </div>
@@ -33,7 +33,7 @@ export default {
     tabs: {
       type: Array,
       default() {
-        return {}
+        return []
       }
     },
     initialIndex: {
@@ -64,10 +64,15 @@ export default {
       }
     }
   },
+  mounted() {
+    this.onChange(this.index)
+  },
   methods: {
     onChange(index) {
         console.log(index)
         this.index = index
+        const component = this.$refs.component[index]
+        component.fetch && component.fetch()
     },
     onScroll(pos) {
         console.log(pos)
