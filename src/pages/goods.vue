@@ -53,7 +53,7 @@
                   >
                 </div>
                 <div class="cartcontrol-wrapper">
-                    <cartcontrol :food="food"></cartcontrol>
+                    <cartcontrol @add="onAdd" :food="food"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -62,7 +62,7 @@
       </cube-scroll-nav>
     </div>
     <div class="shop-cart-wrapper">
-     <shop-cart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"  :minPrice="seller.minPrice"></shop-cart>
+     <shop-cart ref="shopCart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"  :minPrice="seller.minPrice"></shop-cart>
     </div>
   </div>
 </template>
@@ -134,6 +134,11 @@ export default {
       getGoods().then((goods) => {
         this.goods = goods
       })
+    },
+    onAdd(e) {
+      console.log(e)
+      console.log(this.$refs.shopCart)
+      this.$refs.shopCart.drop(e)
     }
   },
   components: {
