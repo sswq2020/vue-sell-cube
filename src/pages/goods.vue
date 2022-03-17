@@ -52,6 +52,9 @@
                     >￥{{ food.oldPrice }}</span
                   >
                 </div>
+                <div class="cartcontrol-wrapper">
+                    <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -59,15 +62,16 @@
       </cube-scroll-nav>
     </div>
     <div class="shop-cart-wrapper">
-     <shop-cart :deliveryPrice="seller.deliveryPrice"  :minPrice="seller.minPrice"></shop-cart>
+     <shop-cart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"  :minPrice="seller.minPrice"></shop-cart>
     </div>
   </div>
 </template>
 
 <script>
 import { getGoods } from '../api/index'
-import SupportIco from '../components/support-ico/support-ico.vue'
+import SupportIco from '../components/support-ico/support-ico'
 import ShopCart from '../components/shop-cart/shop-cart'
+import cartcontrol from '../components/cart-control/cart-control'
 
 export default {
   name: 'Goods',
@@ -109,6 +113,18 @@ export default {
         ret.push({ type, name, count })
      })
      return ret
+   },
+
+   selectFoods() {
+     let ret = []
+     this.goods.forEach((good) => {
+       good.foods.forEach((food) => {
+         if (food.count) {
+           ret.push(food)
+         }
+       })
+     })
+     return ret
    }
 
   },
@@ -122,7 +138,8 @@ export default {
   },
   components: {
     SupportIco,
-    ShopCart
+    ShopCart,
+    cartcontrol
   }
 }
 </script>
@@ -256,6 +273,12 @@ export default {
           font-size: $fontsize-small-s;
           color: $color-light-grey;
         }
+      }
+
+      .cartcontrol-wrapper{
+        position:absolute;
+        right:0;
+        bottom:12px
       }
     }
   }
