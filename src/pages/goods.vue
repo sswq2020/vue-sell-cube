@@ -58,12 +58,16 @@
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
+    <div class="shop-cart-wrapper">
+     <shop-cart :deliveryPrice="seller.deliveryPrice"  :minPrice="seller.minPrice"></shop-cart>
+    </div>
   </div>
 </template>
 
 <script>
 import { getGoods } from '../api/index'
 import SupportIco from '../components/support-ico/support-ico.vue'
+import ShopCart from '../components/shop-cart/shop-cart'
 
 export default {
   name: 'Goods',
@@ -90,6 +94,10 @@ export default {
 
   },
   computed: {
+    seller() {
+      return this.data.seller
+    },
+
    barTxt() {
      let ret = []
      this.goods.forEach(good => {
@@ -113,7 +121,8 @@ export default {
     }
   },
   components: {
-    SupportIco
+    SupportIco,
+    ShopCart
   }
 }
 </script>
@@ -126,6 +135,15 @@ export default {
   position: relative;
   text-align: left;
   height: 100%;
+
+  .shop-cart-wrapper {
+    position: absolute;
+    left:0;
+    bottom: 0;
+    z-index:50;
+    width:100%;
+    height:48px;
+  }
 
   .scroll-nav-wrapper {
     position: absolute;
@@ -149,6 +167,20 @@ export default {
     line-height: 14px;
     font-size: 12px;
     background: $color-background-ssss;
+    .text{
+      flex: 1;
+      position: relative;
+    }
+    .num{
+      position:absolute;
+      right:-8px;
+      top:-10px;
+    }
+    .supprt-ico{
+      display: inline-block;
+      vertical-align: top;
+      margin-right:4px;
+    }
   }
 
   >>> .cube-scroll-nav-bar-item_active {
@@ -179,7 +211,7 @@ export default {
 
     .icon {
       flex: 0 0 57px;
-      margin: rigt 10px;
+      margin-right: 10px;
     }
 
     .content {
@@ -213,7 +245,6 @@ export default {
       .price {
         font-weight: 700;
         line-height: 24px;
-
         .now {
           margin-right: 8px;
           font-size: $fontsize-medium;
