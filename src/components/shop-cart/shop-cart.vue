@@ -8,7 +8,9 @@
                <i class="icon-shopping_cart">
                </i>
             </div>
-            <div class="num"></div>
+            <div class="num" v-show="totalCount>0">
+             <bubble :num="totalCount"></bubble>
+            </div>
           </div>
           <div class="price">￥{{totalPrice}}</div>
           <div class="desc">另需配送费{{deliveryPrice}}元</div>
@@ -22,7 +24,9 @@
 </template>
 
 <script>
+import bubble from '../bubble/bubble.vue'
 export default {
+  components: { bubble },
   name: 'shop-cart',
   props: {
     selectFoods: {
