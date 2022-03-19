@@ -24,6 +24,9 @@
                       :type="slotsunProps.txt.type">
                     </support-ico>
                     <span>{{slotsunProps.txt.name}}</span>
+                    <span class="num" v-show="slotsunProps.txt.count>0">
+                      <bubble :num="slotsunProps.txt.count"></bubble>
+                    </span>
                   </div>
                 </template>
           </cube-scroll-nav-bar>
@@ -72,6 +75,7 @@ import { getGoods } from '../api/index'
 import SupportIco from '../components/support-ico/support-ico'
 import ShopCart from '../components/shop-cart/shop-cart'
 import cartcontrol from '../components/cart-control/cart-control'
+import bubble from '../components/bubble/bubble'
 
 export default {
   name: 'Goods',
@@ -104,13 +108,19 @@ export default {
 
    barTxt() {
      let ret = []
-     this.goods.forEach(good => {
-        let count = 0
-        const { type, name, foods } = good
-        foods.forEach((food) => {
-          count = count + food.count || 0
-        })
-        ret.push({ type, name, count })
+     this.goods.forEach((good) => {
+       const type = good.type
+       const name = good.name
+       let sum = 0
+       good.foods.forEach((food) => {
+          sum = sum + (food.count || 0) // sum = sum + food.count || 0 这种运算符的优先级是错的 ,必须先执行右边的
+          console.log(sum)
+       })
+      ret.push({
+        type,
+        name,
+        count: sum
+      })
      })
      return ret
    },
@@ -136,15 +146,14 @@ export default {
       })
     },
     onAdd(e) {
-      console.log(e)
-      console.log(this.$refs.shopCart)
       this.$refs.shopCart.drop(e)
     }
   },
   components: {
     SupportIco,
     ShopCart,
-    cartcontrol
+    cartcontrol,
+    bubble
   }
 }
 </script>

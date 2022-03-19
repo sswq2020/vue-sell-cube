@@ -132,7 +132,7 @@ export default {
        inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
     },
     dropping(el, done) {
-      this._reflow = document.body.offsetHeight
+      this._reflow = document.body.offsetHeight // 强制一次重绘
       el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
       const inner = el.getElementsByClassName(INNER_HOOK)[0]
       inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
