@@ -20,6 +20,7 @@
       </div>
       <div class="ball-container">
         <div v-for="(ball,index) in balls" :key="index">
+        <!-- JavaScript 钩子 https://cn.vuejs.org/v2/guide/transitions.html#JavaScript-%E9%92%A9%E5%AD%90 -->
           <transition
            @before-enter="beforeDrop"
            @enter="dropping"
@@ -110,41 +111,42 @@ export default {
     this.dropBalls = []
   },
   methods: {
-    drop(el) {
+    drop(el) { // 这里el是EVENT_ADD事件发射的元素
       for (let i = 0; i < this.balls.length; i++) {
         const ball = this.balls[i]
            if (!ball.show) {
-             ball.show = true
+             ball.show = true // 触发一系列显示动画的开始
              ball.el = el
-             this.dropBalls.push(ball)
+             this.dropBalls.push(ball) // 队列先进先出
              return
            }
       }
     },
-    beforeDrop(el) {
+    beforeDrop(el) { // 这里el是ball小球本身的dom
        const ball = this.dropBalls[this.dropBalls.length - 1] // 取最后一个
        const rect = ball.el.getBoundingClientRect()
        const x = rect.left - 32
        const y = -(window.innerHeight - rect.top - 22)
-       el.style.display = ''
+       el.style.display = '' // 先把小球显示出来
        el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`
        const inner = el.getElementsByClassName(INNER_HOOK)[0]
        inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
     },
-    dropping(el, done) {
-      this._reflow = document.body.offsetHeight // 强制一次重绘
+    dropping(el, done) { // 这里el是ball小球本身的dom
+      this._reflow = document.body.offsetHeight // 元素移动后,想再做下面的动画,必须先强制一次重绘
       el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
       const inner = el.getElementsByClassName(INNER_HOOK)[0]
       inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
       el.addEventListener('transitionend', done)
     },
-    afterDrop(el) {
-      const ball = this.dropBalls.shift()
+    afterDrop(el) { // 这里el是ball小球本身的dom
+      const ball = this.dropBalls.shift() // 队列先进先出
       if (ball) {
         ball.show = false
         el.style.display = 'none'
       }
     }
+
   }
 }
 </script>
