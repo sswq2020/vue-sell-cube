@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-      <div class="content">
+      <div class="content" @click="toggleList">
         <div class="content-left">
           <div class="logo-wrapper">
             <div class="logo">
@@ -109,6 +109,7 @@ export default {
   },
   created() {
     this.dropBalls = []
+    this.listFold = true
   },
   methods: {
     drop(el) { // 这里el是EVENT_ADD事件发射的元素
@@ -145,6 +146,34 @@ export default {
         ball.show = false
         el.style.display = 'none'
       }
+    },
+    toggleList() {
+      if (!this.totalCount) {
+        return
+      }
+      if (this.listFold) {
+        this.listFold = false
+        this._showShopCartList()
+      } else {
+        this.listFold = true
+        this._hideShopCartList()
+      }
+    },
+    _showShopCartList() {
+      this.ShopCartList = this.ShopCartList || this.$createShopCartList({
+          $props: {
+            selectFoods: 'selectFoods'
+          },
+          $events: {
+            hide: () => {
+              this.listFold = true
+            }
+          }
+      })
+      this.ShopCartList.show()
+    },
+    _hideShopCartList() {
+      this.ShopCartList.hide()
     }
 
   }
